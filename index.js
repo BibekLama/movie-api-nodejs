@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
-const moment = require('moment');
-
 const cors = require('cors')
 
 require('dotenv').config();
