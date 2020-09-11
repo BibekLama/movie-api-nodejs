@@ -23,7 +23,7 @@ exports.movieList = (req, res, next) => {
                         average: doc.ratingValue / doc.ratingCount,
                         request: {
                             type: 'GET',
-                            url: `${process.env.HOST}/movies/${doc._id}`
+                            url: `${process.env.HOST}movies/${doc._id}`
                         }
                     }
                 })
@@ -123,7 +123,7 @@ exports.addMovie = (req, res, next) => {
                 data: result,
                 request: {
                     type: 'GET',
-                    url: `${process.env.HOST}/movies/${result._id}`
+                    url: `${process.env.HOST}movies/${result._id}`
                 }
             });
         }
@@ -166,7 +166,7 @@ exports.updateMovie  = async (req, res, next) => {
                     message: 'Movie updated',
                     request: {
                         type: 'GET',
-                        url: `${process.env.HOST}/movies/id/${movieId}`
+                        url: `${process.env.HOST}movies/id/${movieId}`
                     }
                 });
             }else{
