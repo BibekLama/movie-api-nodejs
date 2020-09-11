@@ -111,7 +111,7 @@ exports.addMovie = (req, res, next) => {
         _id: new mongoose.Types.ObjectId(),
         movieId: req.body.movieId,
         img: req.file.filename ? req.file.filename : '',
-        imgUrl: `${process.env.HOST}/${req.file.path}`,
+        imgUrl: `${process.env.HOST}${req.file.path}`,
         genres: req.body.genres != undefined && req.body.genres.length > 0 ? req.body.genres : [],
         ratingCount: 0,
         ratingValue: 0
@@ -123,7 +123,7 @@ exports.addMovie = (req, res, next) => {
                 data: result,
                 request: {
                     type: 'GET',
-                    url: `${process.env.HOST}}/movies/${result._id}`
+                    url: `${process.env.HOST}/movies/${result._id}`
                 }
             });
         }
@@ -147,7 +147,7 @@ exports.updateMovie  = async (req, res, next) => {
 
     if(req.file){
         updateData['img'] = req.file.filename
-        updateData['imgUrl'] = `${process.env.HOST}/${req.file.path}`
+        updateData['imgUrl'] = `${process.env.HOST}${req.file.path}`
     }
     console.log(movie)
     if(movie !== null){
