@@ -20,13 +20,15 @@ const server = http.createServer(app);
 
 app.use(morgan('dev'));
 
+app.disable('etag');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 connection.connect();
 
-app.use('/uploads', express.static('uploads'));
-
+var uploadPath = path.join(__dirname, './uploads');
+app.use('/uploads', express.static(uploadPath));
 
 app.use(function (req, res, next) {
     console.log(req.headers.origin)
@@ -56,7 +58,7 @@ const genreRoutes = require('./routes/genre');
 app.use('/genres', genreRoutes);
 
 app.use((req, res, next) => {
-    const error = new Error("Not Found!");
+    const error = new Error("Not Found!!");
     error.status = 404;
     next(error);
 });

@@ -21,7 +21,6 @@ const MovieSchema = new mongoose.Schema({
     },
     genres: [{
         type: mongoose.Schema.Types.ObjectId,
-        unique: true,
         ref: 'Genre'
     }],
     createdAt: {

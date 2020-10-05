@@ -2,20 +2,28 @@ const mongoose = require('mongoose');
 const Rating = require('../models/Rating');
 const Movie = require('../models/Movie');
 
-exports.addRatingToMovie = (req, res, next) => {
+exports.addRatingToMovie = async (req, res, next) => {
     const body = req.body
 
     const rating = new Rating({
         _id: new mongoose.Types.ObjectId(),
-        movie: body['movieId'],
+        movieId: body['movieId'],
         userId: body['userId'],
         rating: body['rating'],
         summary: body['summary']
     });
 
+    let rate = await Rating.find({userId: body['userId'], movieId: body['movieId']});
+    console.log(rate)
+    if(rate.length > 0 && rate[0].userId === body['userId'] && rate[0].movieId === body['movieId']){
+        res.status(500).json({
+            message: "Already rated to this movie"
+        });
+    }
+
     rating.save().then(
         result => {
-            Movie.updateOne({_id: body['movieId']}, {$inc : {'ratingCount' : 1, 'ratingValue' : body['rating']}})
+            Movie.updateOne({movieId: body['movieId']}, {$inc : {'ratingCount' : 1, 'ratingValue' : body['rating']}})
                 .exec()
                 .then(rs => { 
                     res.status(201).json({
@@ -25,7 +33,7 @@ exports.addRatingToMovie = (req, res, next) => {
                 })
         }
     ).catch(err => {
-        console.log(err);
+        console.log(err.message);
         res.status(500).json({
             error: err
         });
@@ -36,8 +44,7 @@ exports.addRatingToMovie = (req, res, next) => {
 exports.userRatingList = (req, res, next) => {
     const id = req.params.id;
     Rating.find({userId: id})
-        .select('_id movie userId rating summary createdAt')
-        .populate('movie')
+        .select('_id movieId userId rating summary createdAt')
         .exec()
         .then(doc => {
             if(doc){
@@ -62,8 +69,8 @@ exports.userRatingList = (req, res, next) => {
 
 exports.movieRatingList = (req, res, next) => {
     const id = req.params.id;
-    Rating.find({movie: id})
-        .select('_id userId rating summary createdAt')
+    Rating.find({movieId: id})
+        .select('_id movieId, userId rating summary createdAt')
         .exec()
         .then(doc => {
             if(doc){

@@ -7,6 +7,10 @@ const GenreSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    movies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Movie'
+    }],
     createdAt: {
         type: Date,
         default: Date.now

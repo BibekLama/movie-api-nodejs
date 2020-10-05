@@ -3,10 +3,9 @@ const Movie = require('./Movie');
 
 const RatingSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    movie: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Movie'
+    movieId: {
+        type: Number,
+        required: true
     },
     userId: {
         type: Number,
@@ -25,6 +24,6 @@ const RatingSchema = new mongoose.Schema({
     }
 });
 
-RatingSchema.index({ movie: 1, userId: 1 }, { unique: true })
+RatingSchema.index({ movieId: 1, userId: 1 }, { unique: true })
 
 module.exports = mongoose.model('Rating', RatingSchema);

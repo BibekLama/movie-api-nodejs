@@ -34,6 +34,11 @@ Description: List all the movies */
 router.get('/', movieService.movieList);
 
 /* URL: /movies
+Method: GET
+Description: List all the movies order by ratings descending*/
+router.get('/ratings/:limit', movieService.movieRatingList);
+
+/* URL: /movies
 Method: POST
 Description: Add new movie */
 router.post('/', upload.single('img'), movieService.addMovie);
